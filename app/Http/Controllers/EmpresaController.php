@@ -10,23 +10,29 @@ use Illuminate\Support\Facades\DB;
 
 class EmpresaController extends Controller
 {
-    public function cadastrarEmpresa(Request $request) {
+     public function cadastrarEmpresa(Request $request) {
 
-        $validateData = $request->validate([
-            'tipo' => 'required|string',
-        ]);
 
         try {
             DB::beginTransaction();
 
-            $empresaData = $request->only(['nome', 'documento', 'data_nascimento', 'tipo', 'telefone', 'celular', 'email', 'cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'estado']);
+            //Salvar dados na tabela empresas
+            $empresaData = $request->input('empresaData');
             $empresa = Empresa::create($empresaData);
 
-            $adminData = $request->only(['nome', 'celular', 'email', 'senha']);
+            //Dados para a tabela administradores
+            $adminData = $request->input('adminData');
             $adminData['empresa_id'] = $empresa->id;
+            $adminData['senha'] = bcrypt($adminData['senha']);
             Administrador::create($adminData);
 
-            $configuracaoData = $request->only(['valor_taxa', 'expectativa_operacoes', 'qtd_taxas_bonificadas', 'taxa_garantida_ate', 'modulo_locacao', 'modulo_vendas', 'modulo_pagamento_contas', 'modulo_debito_por_baixa', 'modulo_nota_fiscal',]);
+            //Dados para a tabela configuracoes
+            $configuracaoData = $request->input('configuracaoData');
+
+            if (isset($configuracaoData['valor_taxa'])) {
+                $configuracaoData['valor_taxa'] = str_replace(',', '.', $configuracaoData['valor_taxa']);
+            }
+
             $configuracaoData['empresa_id'] = $empresa->id;
             Configuracao::create($configuracaoData);
 
