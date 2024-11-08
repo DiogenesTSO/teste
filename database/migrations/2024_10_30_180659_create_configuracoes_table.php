@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('configuracoes', function (Blueprint $table) {
             $table->id();
             $table->integer('empresa_id');
-            $table->decimal('valor_taxa', 7, 2);
+            $table->integer('valor_taxa');
             $table->integer('expectativa_operacoes');
             $table->integer('qtd_taxas_bonificadas');
             $table->date('taxa_garantida_ate');

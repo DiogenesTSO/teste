@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('data_nascimento')->nullable();
             $table->string('tipo');
             $table->string('telefone');
-            $table->string('celular')->nullable();
+            $table->string('celular');
             $table->string('email');
             $table->string('cep');
             $table->string('rua');
