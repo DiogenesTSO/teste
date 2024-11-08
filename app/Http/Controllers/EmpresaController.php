@@ -12,6 +12,11 @@ class EmpresaController extends Controller
 {
      public function cadastrarEmpresa(Request $request) {
 
+        // //Validação dos dados 
+        // $validateData = $request->validate([
+        //     'email' => 'required|email|unique:administradores,email',
+        //     'documento' => 'required|string|unique:empresas,documento',
+        // ]);
 
         try {
             DB::beginTransaction();
@@ -38,7 +43,7 @@ class EmpresaController extends Controller
 
             DB::commit();
 
-            return response()->json(['success' => true, 'message' => 'Empresa cadastrada'], 201);
+            return response()->json(['success' => true, 'message' => 'Empresa cadastrada com sucesso!'], 201);
 
         } catch (\Exception $e) {
             DB::rollBack();
